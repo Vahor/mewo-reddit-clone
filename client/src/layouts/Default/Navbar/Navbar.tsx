@@ -4,6 +4,8 @@ import {Link, useLocation} from "react-router-dom";
 import React from "react";
 import {Logo} from "@/components/Logo";
 import {Button} from "@/components/Button";
+import {useTheme} from "@/context/ThemeProvider";
+import {IconMoon, IconSun} from "@tabler/icons";
 
 const navbarLinks = [
     {
@@ -19,7 +21,7 @@ const navbarLinks = [
 export const Navbar = () => {
     return (
         <div
-            className='fixed h-16 bg-white dark:bg-dark w-full flex flex-row items-center max-w-screen-lg px-4 shadow justify-between'>
+            className='fixed h-16 bg-white dark:bg-gray-900 w-full flex flex-row items-center max-w-screen-lg px-4 border-b border-gray-300 dark:border-gray-800 justify-between'>
             <Logo/>
             <NavLinks/>
             <UserData/>
@@ -53,25 +55,31 @@ const NavLinks = () => {
 
 const UserData = () => {
     const {user, logout} = useAuth();
+    const {theme, setTheme} = useTheme();
 
     return (
-        <div className='w-max flex items-center'>
-            {!user && (
-                <Link to='/auth/login'>
-                    <Button>
-                        Login
-                    </Button>
-                </Link>
-            )}
-            {user && (
-                <div onClick={logout}
-                     className='flex items-center gap-2 transition-color duration-100 hover:bg-gray-100 rounded-md w-full cursor-pointer'>
-                    <div className="flex flex-col">
-                        <p className=''>{user.username}</p>
-                        <p className='font-normal text-xs text-gray-300'>@{user.name}</p>
+        <div className="flex flex-row items-center gap-2">
+            <div className='w-max flex items-center'>
+                {!user && (
+                    <Link to='/auth/login'>
+                        <Button>
+                            Login
+                        </Button>
+                    </Link>
+                )}
+                {user && (
+                    <div onClick={logout} className='cursor-pointer font-normal text-xs text-gray-300'>
+                        @{user.name}
                     </div>
-                </div>
-            )}
+                )}
+            </div>
+            <div
+                onClick={() => setTheme(old => old === 'light' ? 'dark' : 'light')}
+                className='p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-100'
+            >
+                {theme === 'light' && <IconMoon/>}
+                {theme === 'dark' && <IconSun/>}
+            </div>
         </div>
     )
 }

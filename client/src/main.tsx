@@ -11,6 +11,7 @@ import {Page404} from "./pages/404";
 import {AuthLayout} from "./layouts/AuthLayout";
 import {AuthContextProvider} from "./context/AuthContext";
 import LoginPage from "@/pages/auth/login";
+import {ThemeContextProvider} from "@/context/ThemeProvider";
 
 const router = createBrowserRouter([
     {
@@ -51,7 +52,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <React.StrictMode>
         <AuthContextProvider>
-            <RouterProvider router={router}/>
+            <ThemeContextProvider>
+                <RouterProvider router={router}/>
+            </ThemeContextProvider>
         </AuthContextProvider>
     </React.StrictMode>,
 )
