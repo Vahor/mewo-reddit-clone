@@ -2,12 +2,18 @@ import React, {createContext, useContext, useEffect, useState} from "react";
 import jwtDecode from 'jwt-decode'
 import type {User} from "@/interface/user";
 import {getUserById} from "@/api/users";
-import {login as apiLogin} from '@/api/auth'
+import {login as apiLogin, register as apiRegister} from '@/api/auth'
 
 type AuthContextProps = {
     user: User | null
+    token: string | null
     logout: () => void
-    login: ({username, password}: { username: string, password: string }) => Promise<User | null>
+    login: ({email, password}: { email: string, password: string }) => Promise<User | null>
+    register: ({
+                   email,
+                   password,
+                   username
+               }: { email: string, password: string, username: string }) => Promise<User | null>
 }
 
 type JWT = {
@@ -16,10 +22,14 @@ type JWT = {
 
 const AuthContext = createContext<AuthContextProps>({
     user: null,
+    token: null,
     login: async () => {
         return null
     },
     logout: () => {
+    },
+    register: async () => {
+        return null
     }
 })
 
@@ -30,10 +40,26 @@ export const useAuth = () => {
 }
 
 const login = async ({
+                         email,
                          password,
-                         username
-                     }: { password: string, username: string }): Promise<AuthContextProps['user']> => {
-    const response = await apiLogin(username, password)
+                     }: { email: string, password: string }): Promise<AuthContextProps['user']> => {
+    const response = await apiLogin(email, password)
+
+    if (!response) {
+        return null;
+    }
+
+    window.sessionStorage.setItem(COOKIE_NAME, response.tokens.access.token)
+
+    return response.user
+}
+
+const register = async ({
+                            email,
+                            password,
+                            username
+                        }: { email: string, password: string, username: string }): Promise<AuthContextProps['user']> => {
+    const response = await apiRegister(email, password, username)
 
     if (!response) {
         return null;
@@ -59,19 +85,32 @@ const parseToken = async (token: string): Promise<AuthContextProps['user']> => {
 export const AuthContextProvider: React.FC<{ children: React.ReactElement }> = ({children}) => {
 
     const [user, setUser] = useState<AuthContextProps['user']>(null)
+    const [mounted, setMounted] = useState(false)
+    const token = window.sessionStorage.getItem(COOKIE_NAME)
 
     useEffect(() => {
+
         (async () => {
-            const token = window.sessionStorage.getItem(COOKIE_NAME)
             if (token) {
                 const user = await parseToken(token)
                 setUser(user)
             }
+            setMounted(true);
         })()
     }, [])
 
-    const handleLogin = async ({username, password}: { username: string, password: string }) => {
-        const user = await login({username, password})
+    const handleLogin = async ({email, password}: { email: string, password: string }) => {
+        const user = await login({email, password})
+        setUser(user)
+        return user
+    }
+
+    const handleRegister = async ({
+                                      email,
+                                      password,
+                                      username
+                                  }: { email: string, password: string, username: string }) => {
+        const user = await register({email, password, username})
         setUser(user)
         return user
     }
@@ -81,13 +120,19 @@ export const AuthContextProvider: React.FC<{ children: React.ReactElement }> = (
         setUser(null)
     }
 
+    if (!mounted) {
+        return <div>loading</div>
+    }
+
 
     return (
         <AuthContext.Provider
             value={{
+                token,
                 user: user,
                 logout: handleLogout,
-                login: handleLogin
+                login: handleLogin,
+                register: handleRegister
             }}
         >
             {children}

@@ -74,7 +74,7 @@ const UserData = () => {
                 )}
             </div>
             <div
-                onClick={() => setTheme(old => old === 'light' ? 'dark' : 'light')}
+                onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
                 className='p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-100'
             >
                 {theme === 'light' && <IconMoon/>}

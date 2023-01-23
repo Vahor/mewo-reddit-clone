@@ -2,7 +2,7 @@ import React, {createContext, useContext, useEffect, useState} from "react";
 
 type ThemeContextProps = {
     theme: 'light' | 'dark'
-    setTheme: React.Dispatch<React.SetStateAction<ThemeContextProps['theme']>>,
+    setTheme:(theme: ThemeContextProps['theme']) => void,
 }
 
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined)
@@ -28,6 +28,11 @@ export const ThemeContextProvider: React.FC<{ children: React.ReactElement }> = 
 
     const [theme, setTheme] = useState<ThemeContextProps['theme']>('light')
 
+    const updateTheme = (theme: ThemeContextProps['theme']) => {
+        setTheme(theme)
+        window.sessionStorage.setItem(COOKIE_NAME, theme)
+    }
+
     useEffect(() => {
         setTheme(getThemeOrDefault(window.sessionStorage.getItem(COOKIE_NAME)))
     }, [])
@@ -36,7 +41,7 @@ export const ThemeContextProvider: React.FC<{ children: React.ReactElement }> = 
         <ThemeContext.Provider
             value={{
                 theme,
-                setTheme
+                setTheme: updateTheme
             }}
         >
             <div className={`${theme} flex flex-col justify-between h-screen`}>

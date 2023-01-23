@@ -12,6 +12,8 @@ import {AuthLayout} from "./layouts/AuthLayout";
 import {AuthContextProvider} from "./context/AuthContext";
 import LoginPage from "@/pages/auth/login";
 import {ThemeContextProvider} from "@/context/ThemeProvider";
+import {HomePage} from "@/pages/home";
+import RegisterPage from "@/pages/auth/register";
 
 const router = createBrowserRouter([
     {
@@ -20,7 +22,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path: '',
-                element: <div>tdest</div>
+                element: <HomePage/>,
             },
             {
                 path: 'users',
@@ -37,8 +39,8 @@ const router = createBrowserRouter([
                 element: <LoginPage/>
             },
             {
-                path: 'signup',
-                element: <div>tdest</div>
+                path: 'register',
+                element: <RegisterPage/>
             }
         ]
     },

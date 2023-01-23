@@ -28,7 +28,7 @@ const createDiscussion = catchAsync(async (req, res) => {
 });
 
 const getDiscussions = catchAsync(async (req, res) => {
-  const discussions = await discussionService.getDiscussions(req.user.id);
+  const discussions = await discussionService.getDiscussionsForUser(req.user.id);
   res.send(discussions);
 });
 

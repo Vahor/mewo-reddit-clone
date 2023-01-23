@@ -9,7 +9,7 @@ export const GET = async <T extends Record<string, any>>(path: string, token?: s
         },
     })
 
-    if (response.status !== 200 && response.status !== 201) {
+    if (response.status !== 200 && response.status !== 201 && response.status !== 304) {
         return await response.json() as ApiError;
     }
 
