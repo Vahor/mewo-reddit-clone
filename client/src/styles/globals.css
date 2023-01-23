@@ -12,7 +12,6 @@ body {
 .dark {
     @apply bg-black;
     @apply text-slate-200;
-    @apply h-full;
-    @apply min-h-screen;
+
 }
 

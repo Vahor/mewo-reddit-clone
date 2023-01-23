@@ -32,6 +32,10 @@ const router = createBrowserRouter([
             {
                 path: 'post/:id',
                 element: <PostIdPage/>
+            },
+            {
+                path: '*',
+                element: <Page404/>
             }
         ]
     },
@@ -48,10 +52,6 @@ const router = createBrowserRouter([
                 element: <RegisterPage/>
             }
         ]
-    },
-    {
-        path: '*',
-        element: <Page404/>
     }
 ]);
 

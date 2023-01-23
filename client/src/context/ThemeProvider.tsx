@@ -2,7 +2,7 @@ import React, {createContext, useContext, useEffect, useState} from "react";
 
 type ThemeContextProps = {
     theme: 'light' | 'dark'
-    setTheme:(theme: ThemeContextProps['theme']) => void,
+    setTheme: (theme: ThemeContextProps['theme']) => void,
 }
 
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined)
@@ -44,7 +44,7 @@ export const ThemeContextProvider: React.FC<{ children: React.ReactElement }> = 
                 setTheme: updateTheme
             }}
         >
-            <div className={`${theme} flex flex-col justify-between h-screen`}>
+            <div className={`${theme} min-h-screen flex flex-col justify-between h-full`}>
                 {children}
             </div>
         </ThemeContext.Provider>
