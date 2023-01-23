@@ -12,10 +12,7 @@ const navbarLinks = [
         label: 'Home',
         href: '/'
     },
-    {
-        label: 'users',
-        href: '/users'
-    },
+
 ]
 
 export const Navbar = () => {
