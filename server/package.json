@@ -1,0 +1,51 @@
+{
+  "name": "twitter-clone-server",
+  "version": "0.0.0",
+  "description": "A twitter clone for education purpose",
+  "main": "src/app.js",
+  "author": "Maxence Hammen <maxence.hammen@zeiltstudio.com>",
+  "scripts": {
+    "db:init": "babel-node -r dotenv/config src/db/dbInit.js",
+    "db:seed": "babel-node -r dotenv/config src/db/dbSeed.js",
+    "start": "nodemon",
+    "lint": "npm run lint:js",
+    "lint:eslint": "eslint --ignore-path .gitignore --ext .js",
+    "lint:js": "npm run lint:eslint src/",
+    "lint:fix": "npm run lint:js -- --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hammenm/twitter-clone.git"
+  },
+  "dependencies": {
+    "@babel/core": "^7.17.10",
+    "@babel/node": "^7.17.10",
+    "@babel/preset-env": "^7.17.10",
+    "@faker-js/faker": "^6.3.1",
+    "babel-preset-airbnb": "^5.0.0",
+    "bcrypt": "^5.0.1",
+    "better-sqlite3": "^7.5.1",
+    "body-parser": "^1.20.0",
+    "celebrate": "^15.0.1",
+    "cors": "^2.8.5",
+    "debug": "^4.3.4",
+    "dotenv": "^16.0.0",
+    "express": "^4.18.1",
+    "express-jwt": "^7.7.0",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "babel-loader": "^8.2.5",
+    "eslint": "^8.15.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "nodemon": "^2.0.16",
+    "prettier": "^2.6.2"
+  },
+  "bugs": {
+    "url": "https://github.com/hammenm/twitter-clone/issues"
+  },
+  "homepage": "https://github.com/hammenm/twitter-clone#readme"
+}

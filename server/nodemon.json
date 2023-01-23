@@ -1,0 +1,8 @@
+{
+  "watch": [
+    "src",
+    ".env"
+  ],
+  "ext": "js,json",
+  "exec": "set DEBUG=twitter-clone-server:* & babel-node -r ./node_modules/dotenv/config ./src/app.js"
+}

@@ -1,0 +1,20 @@
+POST  http://localhost:6852/signin
+Accept: application/json
+Content-Type: application/json
+
+{
+"name": "test",
+"password": "test"
+}
+
+###
+
+POST  http://localhost:6852/signup
+Accept: application/json
+Content-Type: application/json
+
+{
+"name": "test",
+"username": "test",
+"password": "test"
+}
