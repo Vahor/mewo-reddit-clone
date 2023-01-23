@@ -4,7 +4,7 @@ export type Post = {
     id: string
     title: string
     description: string
-    comments: Comment[]
+    comments: Comment[] | undefined
 }
 
 type Comment = {

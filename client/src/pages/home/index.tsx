@@ -1,53 +1,64 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useAuth} from "@/context/AuthContext";
-import {createPost, getPosts} from "@/api/posts";
+import {getPosts} from "@/api/posts";
 import {Post} from "@/interface/post";
-import {User} from "@/interface/user";
-import {getAllUsers} from "@/api/users";
+import {Button} from "@/components/Button";
+import {IconPlus} from "@tabler/icons";
+import {CreatePostModal} from "@/components/Home/CreatePostModal";
+import {PostCard} from "@/components/Home/PostCard";
+
+const CreatePostButton = ({onCreate}: { onCreate: () => void }) => {
+    const [createPostModalOpen, setCreatePropsModalOpen] = useState(false)
+
+    const openModal = () => setCreatePropsModalOpen(true)
+    const handleCreate = (create: boolean) => {
+        setCreatePropsModalOpen(false)
+        if (create)
+            onCreate()
+    }
+
+    return (
+        <div>
+            <CreatePostModal open={createPostModalOpen} close={handleCreate}/>
+            <Button onClick={openModal}>
+                <div className="flex items-center gap-2">
+                    <IconPlus size={16}/>
+                    <p className='pb-0.5'>Create</p>
+                </div>
+            </Button>
+        </div>
+    )
+}
 
 export const HomePage = () => {
-    const [post, setPosts] = useState<Post[]>()
-    const [users, setUsers] = useState<User[]>()
-    const {token, user} = useAuth()
+    const [posts, setPosts] = useState<Post[]>()
+    const {token} = useAuth()
 
-    useEffect(() => {
+    const loadPosts = async () => {
         getPosts(token!).then((posts) => {
             if (posts) {
                 setPosts(posts)
             }
         })
-
-        getAllUsers(token!).then((users) => {
-            if(users) {
-                setUsers(users)
-            }
-        })
+    }
+    useEffect(() => {
+        loadPosts()
     }, [token])
 
-    const test = () => {
-        createPost({
-            title: Math.random() + 'title',
-            description: 'ldldldldl',
-            userIds: users!.map(user => user.id).filter(id => id !== user!.id)
-        }, token!)
-    }
-
     return (
-        <div>
-            HomePage
-            <pre>
-                {JSON.stringify(post, null, 2)}
-            </pre>
-            <pre>
-                {JSON.stringify(token, null, 2)}
-            </pre>
-            <pre>
-                {JSON.stringify(users, null, 2)}
-            </pre>
-            <button
-            onClick={test}>
-                create post
-            </button>
+        <div className='flex flex-col'>
+            <div className="flex justify-between">
+                <div>
+                    <h1 className='font-bold text-lg'>Latest Posts</h1>
+                </div>
+                <CreatePostButton onCreate={loadPosts}/>
+            </div>
+            <div className="mt-6 flex flex-col">
+                {posts?.map((post) => (
+                    <PostCard key={post.id} post={post}/>
+                ))}
+            </div>
+
         </div>
     )
 }
