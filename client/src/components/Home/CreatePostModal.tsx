@@ -6,7 +6,6 @@ import {User} from "@/interface/user";
 import {getAllUsers} from "@/api/users";
 
 type CreatePostModalProps = {
-    onCreate?: () => void
     open: boolean
     close?: (create: boolean) => void
 }
@@ -24,7 +23,8 @@ export const CreatePostModal = ({open, close}: CreatePostModalProps) => {
     const [userIds, setUserIds] = useState<User['id'][]>([])
 
     useEffect(() => {
-        getAllUsers(token!).then((users) => {
+        if (!token) return
+        getAllUsers(token).then((users) => {
             if (users) {
                 setUsers(users.filter(u => u.id !== user!.id))
             }
@@ -68,7 +68,7 @@ export const CreatePostModal = ({open, close}: CreatePostModalProps) => {
                 </p>
                 <form className='flex flex-col gap-2' onSubmit={handleSubmit}>
                     <div>
-                        <label htmlFor="password" className='dark:text-gray-200 text-gray-800 text-sm'>
+                        <label htmlFor="title" className='dark:text-gray-200 text-gray-800 text-sm'>
                             Title
                         </label>
                         <input

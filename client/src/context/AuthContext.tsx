@@ -1,7 +1,7 @@
 import React, {createContext, useContext, useEffect, useState} from "react";
 import type {User} from "@/interface/user";
 import {getCurrentUser} from "@/api/users";
-import {login as apiLogin, register as apiRegister} from '@/api/auth'
+import {login as apiLogin, register as apiRegister, logout as apiLogout} from '@/api/auth'
 
 type AuthContextProps = {
     user: User | null
@@ -44,7 +44,10 @@ const login = async ({
         return null;
     }
 
-    window.sessionStorage.setItem(COOKIE_NAME, response.tokens.access.token)
+    window.sessionStorage.setItem(COOKIE_NAME, JSON.stringify({
+        access: response.tokens.access.token,
+        refresh: response.tokens.refresh.token,
+    }))
 
     return response.user
 }
@@ -60,13 +63,22 @@ const register = async ({
         return null;
     }
 
-    window.sessionStorage.setItem(COOKIE_NAME, response.tokens.access.token)
+    window.sessionStorage.setItem(COOKIE_NAME, JSON.stringify({
+        access: response.tokens.access.token,
+        refresh: response.tokens.refresh.token,
+    }))
 
     return response.user
 }
 
-const logout = () => {
-    window.sessionStorage.removeItem(COOKIE_NAME)
+const logout = async () => {
+
+    const token = window.sessionStorage.getItem(COOKIE_NAME)
+    if (token) {
+        window.sessionStorage.removeItem(COOKIE_NAME)
+        const refresh = JSON.parse(token).refresh;
+        await apiLogout(refresh)
+    }
 }
 
 const parseToken = async (token: string): Promise<AuthContextProps['user']> => {
@@ -77,7 +89,8 @@ export const AuthContextProvider: React.FC<{ children: React.ReactElement }> = (
 
     const [user, setUser] = useState<AuthContextProps['user']>(null)
     const [mounted, setMounted] = useState(false)
-    const token = window.sessionStorage.getItem(COOKIE_NAME)
+    const cookie = window.sessionStorage.getItem(COOKIE_NAME)
+    const token = cookie == null ?null : JSON.parse(cookie).access
 
     useEffect(() => {
 

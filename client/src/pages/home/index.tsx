@@ -54,6 +54,8 @@ export const HomePage = () => {
                 <CreatePostButton onCreate={loadPosts}/>
             </div>
             <div className="mt-6 flex flex-col">
+                {posts === undefined && <div>loading</div>}
+                {posts?.length === 0 && <div>Empty</div>}
                 {posts?.map((post) => (
                     <PostCard key={post.id} post={post}/>
                 ))}

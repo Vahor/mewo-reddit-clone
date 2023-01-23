@@ -25,7 +25,7 @@ export const DefaultLayout = () => {
     return (
         <>
             <Navbar/>
-            <div className='mt-24 max-w-screen-lg px-4 h-full w-full mx-auto'>
+            <div className='mt-24 max-w-screen-lg px-4 pb-24 h-full w-full mx-auto'>
                 <Outlet/>
             </div>
         </>

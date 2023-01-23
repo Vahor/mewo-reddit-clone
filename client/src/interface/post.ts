@@ -4,11 +4,15 @@ export type Post = {
     id: string
     title: string
     description: string
-    comments: Comment[] | undefined
+    users: User[]
+}
+
+export type PostWithComments = Post & {
+    comments: Comment[]
 }
 
 type Comment = {
     id: string
-    comment: string
+    content: string
     user: Pick<User, 'id' | 'name'>
 }

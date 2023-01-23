@@ -14,6 +14,7 @@ import LoginPage from "@/pages/auth/login";
 import {ThemeContextProvider} from "@/context/ThemeProvider";
 import {HomePage} from "@/pages/home";
 import RegisterPage from "@/pages/auth/register";
+import {PostIdPage} from "@/pages/post/[id]";
 
 const router = createBrowserRouter([
     {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
             {
                 path: 'users',
                 element: <div>tdest</div>
+            },
+            {
+                path: 'post/:id',
+                element: <PostIdPage/>
             }
         ]
     },
