@@ -10,6 +10,7 @@ import {DefaultLayout} from './layouts/Default';
 import {Page404} from "./pages/404";
 import {AuthLayout} from "./layouts/AuthLayout";
 import {AuthContextProvider} from "./context/AuthContext";
+import LoginPage from "@/pages/auth/login";
 
 const router = createBrowserRouter([
     {
@@ -32,7 +33,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path: 'login',
-                element: <div>tdest</div>
+                element: <LoginPage/>
             },
             {
                 path: 'signup',

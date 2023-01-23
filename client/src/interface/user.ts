@@ -3,4 +3,5 @@ export type User = {
     name: string;
     username: string;
     role: 'user' | 'admin'
+    isEmailVerified: boolean | undefined
 }

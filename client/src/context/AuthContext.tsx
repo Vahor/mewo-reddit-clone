@@ -48,10 +48,10 @@ const logout = () => {
     window.sessionStorage.removeItem(COOKIE_NAME)
 }
 
-const parseToken = (token: string): AuthContextProps['user'] => {
+const parseToken = async (token: string): Promise<AuthContextProps['user']> => {
     const parsed = jwtDecode<JWT>(token)
     if (parsed.sub) {
-        return getUserById(parsed.sub, token)
+        return await getUserById(parsed.sub, token)
     }
     return null
 }
@@ -61,11 +61,13 @@ export const AuthContextProvider: React.FC<{ children: React.ReactElement }> = (
     const [user, setUser] = useState<AuthContextProps['user']>(null)
 
     useEffect(() => {
-        const token = window.sessionStorage.getItem(COOKIE_NAME)
-        if (token) {
-            const user = parseToken(token)
-            setUser(user)
-        }
+        (async () => {
+            const token = window.sessionStorage.getItem(COOKIE_NAME)
+            if (token) {
+                const user = await parseToken(token)
+                setUser(user)
+            }
+        })()
     }, [])
 
     const handleLogin = async ({username, password}: { username: string, password: string }) => {
