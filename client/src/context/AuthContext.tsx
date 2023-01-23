@@ -1,7 +1,6 @@
 import React, {createContext, useContext, useEffect, useState} from "react";
-import jwtDecode from 'jwt-decode'
 import type {User} from "@/interface/user";
-import {getUserById} from "@/api/users";
+import {getCurrentUser} from "@/api/users";
 import {login as apiLogin, register as apiRegister} from '@/api/auth'
 
 type AuthContextProps = {
@@ -14,10 +13,6 @@ type AuthContextProps = {
                    password,
                    username
                }: { email: string, password: string, username: string }) => Promise<User | null>
-}
-
-type JWT = {
-    sub: number
 }
 
 const AuthContext = createContext<AuthContextProps>({
@@ -75,11 +70,7 @@ const logout = () => {
 }
 
 const parseToken = async (token: string): Promise<AuthContextProps['user']> => {
-    const parsed = jwtDecode<JWT>(token)
-    if (parsed.sub) {
-        return await getUserById(parsed.sub, token)
-    }
-    return null
+    return await getCurrentUser(token)
 }
 
 export const AuthContextProvider: React.FC<{ children: React.ReactElement }> = ({children}) => {

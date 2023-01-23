@@ -25,8 +25,10 @@ export const DefaultLayout = () => {
     return (
         <>
             <Navbar/>
-            <div className='mt-16'>
-                <Outlet/>
+            <div className='mt-16 max-w-screen-lg px-4 h-full'>
+                <div className="overflow-x-auto h-full">
+                    <Outlet/>
+                </div>
             </div>
         </>
     )
