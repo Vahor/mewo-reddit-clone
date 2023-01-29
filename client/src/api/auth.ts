@@ -25,7 +25,7 @@ export const logout = async (refresh_token: string): Promise<void> => {
     });
 }
 
-export const register = async (email: string, password: string, username: string,): Promise<null | LoginResponse> => {
+export const register = async (email: string, password: string, username: string): Promise<null | LoginResponse> => {
     const response = await POST('/auth/register', null, {
         name: username,
         email,
@@ -39,3 +39,4 @@ export const register = async (email: string, password: string, username: string
 
     return response as LoginResponse
 }
+

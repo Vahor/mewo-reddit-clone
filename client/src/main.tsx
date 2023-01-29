@@ -15,6 +15,7 @@ import {ThemeContextProvider} from "@/context/ThemeProvider";
 import {HomePage} from "@/pages/home";
 import RegisterPage from "@/pages/auth/register";
 import {PostIdPage} from "@/pages/post/[id]";
+import SettingsPage from "@/pages/settings";
 
 const router = createBrowserRouter([
     {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
             {
                 path: 'post/:id',
                 element: <PostIdPage/>
+            },
+            {
+                path: 'settings',
+                element: <SettingsPage/>
             },
             {
                 path: '*',

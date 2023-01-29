@@ -5,14 +5,13 @@ import React from "react";
 import {Logo} from "@/components/Logo";
 import {Button} from "@/components/Button";
 import {useTheme} from "@/context/ThemeProvider";
-import {IconMoon, IconSun} from "@tabler/icons";
+import {IconLogout, IconMoon, IconSun} from "@tabler/icons";
 
 const navbarLinks = [
     {
         label: 'Home',
         href: '/'
     },
-
 ]
 
 export const Navbar = () => {
@@ -70,10 +69,16 @@ const UserData = () => {
                     </Link>
                 )}
                 {user && (
-                    <div onClick={logout} className='cursor-pointer font-normal text-xs text-gray-300'>
-                        @{user.name}
-                    </div>
+                    <Link to='/settings'>
+                        <div className='cursor-pointer font-normal text-xs text-gray-500 dark:text-gray-100'>
+                            @{user.name}
+                        </div>
+                    </Link>
                 )}
+            </div>
+            <div onClick={logout}
+                 className='p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-100'>
+                <IconLogout/>
             </div>
             <div
                 onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}

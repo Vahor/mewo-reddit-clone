@@ -1,7 +1,8 @@
 import {User} from "@/interface/user";
-import {GET} from "@/api/utils";
+import {GET, PATCH} from "@/api/utils";
+import {ApiError} from "@/interface/error";
 
-export const getCurrentUser = async ( token: string): Promise<User | null> => {
+export const getCurrentUser = async (token: string): Promise<User | null> => {
     const response = await GET(`/auth/user`, token)
 
     if (response.code) {
@@ -32,4 +33,15 @@ export const getAllUsers = async (token: string): Promise<User[] | null> => {
     }
 
     return response as User[]
+}
+
+export const changePassword = async (userId: string, newPassword: string, token: string): Promise<ApiError | void> => {
+    const response = await PATCH(`/users/${userId}`, token, {
+        password: newPassword
+    })
+
+    if (response.code) {
+        return response as ApiError;
+    }
+
 }
