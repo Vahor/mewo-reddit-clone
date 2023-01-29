@@ -1,17 +1,41 @@
-import {User} from "../interface/user";
-import {Tokens} from "../interface/tokens";
+import {User} from "@/interface/user";
+import {Tokens} from "@/interface/tokens";
+import {POST} from "@/api/utils";
 
-export const register = (name: string, email: string, password: string): null | {
+type LoginResponse = {
     user: User
     tokens: Tokens
-} => {
-    return null
+}
+export const login = async (email: string, password: string): Promise<null | LoginResponse> => {
+    const response = await POST('/auth/login', null, {
+        email,
+        password
+    })
+    if (response.code) {
+        console.log(response)
+        return null;
+    }
+
+    return response as LoginResponse
 }
 
+export const logout = async (refresh_token: string): Promise<void> => {
+    await POST('/auth/logout', null, {
+        refreshToken: refresh_token,
+    });
+}
 
-export const login = (email: string, password: string): null | {
-    user: User
-    tokens: Tokens
-} => {
-    return null
+export const register = async (email: string, password: string, username: string,): Promise<null | LoginResponse> => {
+    const response = await POST('/auth/register', null, {
+        name: username,
+        email,
+        password
+    })
+
+    if (response.code) {
+        console.log(response)
+        return null;
+    }
+
+    return response as LoginResponse
 }

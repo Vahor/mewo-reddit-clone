@@ -9,6 +9,25 @@ const getDiscussionById = async (id) => {
   return Discussion.findOne({ where: { id } });
 };
 
+const getDiscussionsForUser = async (userId) => {
+  const discussions = await Discussion.findAll({
+    include: [
+      {
+        model: User,
+        as: 'users',
+        where: { id: userId },
+        attributes: [],
+      },
+    ],
+  });
+
+  return discussions.map((discussion) => ({
+    id: discussion.id,
+    title: discussion.title,
+    description: discussion.description,
+  }));
+};
+
 /**
  * Get discussion users
  * @param {Number} discussionId
@@ -87,6 +106,7 @@ const getDiscussionComments = async (discussionId) => {
 };
 
 module.exports = {
+  getDiscussionsForUser,
   getDiscussionById,
   getDiscussionUsers,
   createDiscussion,

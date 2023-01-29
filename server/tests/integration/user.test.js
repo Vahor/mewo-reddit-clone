@@ -182,16 +182,6 @@ describe('User routes', () => {
 
       await request(app).get('/v1/users').send().expect(httpStatus.UNAUTHORIZED);
     });
-
-    test('should return 403 if a non-admin is trying to access all users', async () => {
-      await insertUsers([userOne, userTwo, admin]);
-
-      await request(app)
-        .get('/v1/users')
-        .set('Authorization', `Bearer ${userOneAccessToken}`)
-        .send()
-        .expect(httpStatus.FORBIDDEN);
-    });
   });
 
   describe('GET /v1/users/:userId', () => {

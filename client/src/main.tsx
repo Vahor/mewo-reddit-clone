@@ -10,6 +10,11 @@ import {DefaultLayout} from './layouts/Default';
 import {Page404} from "./pages/404";
 import {AuthLayout} from "./layouts/AuthLayout";
 import {AuthContextProvider} from "./context/AuthContext";
+import LoginPage from "@/pages/auth/login";
+import {ThemeContextProvider} from "@/context/ThemeProvider";
+import {HomePage} from "@/pages/home";
+import RegisterPage from "@/pages/auth/register";
+import {PostIdPage} from "@/pages/post/[id]";
 
 const router = createBrowserRouter([
     {
@@ -18,11 +23,19 @@ const router = createBrowserRouter([
         children: [
             {
                 path: '',
-                element: <div>tdest</div>
+                element: <HomePage/>,
             },
             {
                 path: 'users',
                 element: <div>tdest</div>
+            },
+            {
+                path: 'post/:id',
+                element: <PostIdPage/>
+            },
+            {
+                path: '*',
+                element: <Page404/>
             }
         ]
     },
@@ -32,17 +45,13 @@ const router = createBrowserRouter([
         children: [
             {
                 path: 'login',
-                element: <div>tdest</div>
+                element: <LoginPage/>
             },
             {
-                path: 'signup',
-                element: <div>tdest</div>
+                path: 'register',
+                element: <RegisterPage/>
             }
         ]
-    },
-    {
-        path: '*',
-        element: <Page404/>
     }
 ]);
 
@@ -50,7 +59,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <React.StrictMode>
         <AuthContextProvider>
-            <RouterProvider router={router}/>
+            <ThemeContextProvider>
+                <RouterProvider router={router}/>
+            </ThemeContextProvider>
         </AuthContextProvider>
     </React.StrictMode>,
 )

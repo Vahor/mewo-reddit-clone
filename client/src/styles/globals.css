@@ -4,6 +4,14 @@
 
 body {
     @apply antialiased;
-    @apply bg-gray-50
+    @apply bg-gray-50;
+    @apply text-slate-800;
+    @apply h-full;
+}
+
+.dark {
+    @apply bg-black;
+    @apply text-slate-200;
+
 }
 
