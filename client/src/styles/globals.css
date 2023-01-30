@@ -12,6 +12,5 @@ body {
 .dark {
     @apply bg-black;
     @apply text-slate-200;
-
 }
 

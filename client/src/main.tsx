@@ -16,11 +16,13 @@ import {HomePage} from "@/pages/home";
 import RegisterPage from "@/pages/auth/register";
 import {PostIdPage} from "@/pages/post/[id]";
 import SettingsPage from "@/pages/settings";
+import {Page500} from "@/pages/500";
 
 const router = createBrowserRouter([
     {
         path: "",
         element: <DefaultLayout/>,
+        errorElement: <Page500/>,
         children: [
             {
                 path: '',
@@ -47,6 +49,7 @@ const router = createBrowserRouter([
     {
         path: "/auth",
         element: <AuthLayout/>,
+        errorElement: <Page500/>,
         children: [
             {
                 path: 'login',
@@ -55,6 +58,10 @@ const router = createBrowserRouter([
             {
                 path: 'register',
                 element: <RegisterPage/>
+            },
+            {
+                path: '*',
+                element: <Page404/>,
             }
         ]
     }
@@ -63,10 +70,10 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <React.StrictMode>
-        <AuthContextProvider>
-            <ThemeContextProvider>
+        <ThemeContextProvider>
+            <AuthContextProvider>
                 <RouterProvider router={router}/>
-            </ThemeContextProvider>
-        </AuthContextProvider>
+            </AuthContextProvider>
+        </ThemeContextProvider>
     </React.StrictMode>,
 )

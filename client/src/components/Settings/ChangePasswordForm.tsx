@@ -15,6 +15,8 @@ export const ChangePasswordForm = () => {
     const {user, token} = useAuth();
 
     const handleSubmit = async (event: FormEvent) => {
+        if (loading || !passwordMatch) return
+
         event.preventDefault()
 
         setLoading(true)
@@ -25,8 +27,6 @@ export const ChangePasswordForm = () => {
                 setError(res.message)
             } else {
                 alert('Password changed successfully')
-                setNewPassword('')
-                setConfirmPassword('')
             }
         }).finally(() => {
             setLoading(false)
@@ -36,7 +36,7 @@ export const ChangePasswordForm = () => {
 
     return (
         <>
-            <h2>
+            <h2 className='font-bold'>
                 Change password
             </h2>
 
@@ -75,7 +75,7 @@ export const ChangePasswordForm = () => {
                     />
                 </div>
                 <div className="w-max ml-auto mt-4">
-                    <Button type="submit" disabled={!passwordMatch || loading}>
+                    <Button type="submit" disabled={!passwordMatch || loading || newPassword.length === 0}>
                         Change password
                     </Button>
                 </div>

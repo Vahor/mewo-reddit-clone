@@ -7,11 +7,7 @@ export type Post = {
     users: User[]
 }
 
-export type PostWithComments = Post & {
-    comments: Comment[]
-}
-
-type Comment = {
+export type Comment = {
     id: string
     content: string
     user: Pick<User, 'id' | 'name'>

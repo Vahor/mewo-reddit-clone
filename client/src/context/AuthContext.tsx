@@ -7,24 +7,24 @@ type AuthContextProps = {
     user: User | null
     token: string | null
     logout: () => void
-    login: ({email, password}: { email: string, password: string }) => Promise<User | null>
+    login: ({email, password}: { email: string, password: string }) => Promise<User>
     register: ({
                    email,
                    password,
                    username
-               }: { email: string, password: string, username: string }) => Promise<User | null>
+               }: { email: string, password: string, username: string }) => Promise<User>
 }
 
 const AuthContext = createContext<AuthContextProps>({
     user: null,
     token: null,
     login: async () => {
-        return null
+        throw new Error()
     },
     logout: () => {
     },
     register: async () => {
-        return null
+        throw new Error()
     }
 })
 
@@ -39,10 +39,6 @@ const login = async ({
                          password,
                      }: { email: string, password: string }): Promise<AuthContextProps['user']> => {
     const response = await apiLogin(email, password)
-
-    if (!response) {
-        return null;
-    }
 
     window.sessionStorage.setItem(COOKIE_NAME, JSON.stringify({
         access: response.tokens.access.token,
@@ -59,16 +55,12 @@ const register = async ({
                         }: { email: string, password: string, username: string }): Promise<AuthContextProps['user']> => {
     const response = await apiRegister(email, password, username)
 
-    if (!response) {
-        return null;
-    }
-
     window.sessionStorage.setItem(COOKIE_NAME, JSON.stringify({
         access: response.tokens.access.token,
         refresh: response.tokens.refresh.token,
     }))
 
-    return response.user
+    return response.user;
 }
 
 const logout = async () => {
@@ -90,7 +82,7 @@ export const AuthContextProvider: React.FC<{ children: React.ReactElement }> = (
     const [user, setUser] = useState<AuthContextProps['user']>(null)
     const [mounted, setMounted] = useState(false)
     const cookie = window.sessionStorage.getItem(COOKIE_NAME)
-    const token = cookie == null ?null : JSON.parse(cookie).access
+    const token = cookie == null ? null : JSON.parse(cookie).access
 
     useEffect(() => {
 
@@ -106,7 +98,7 @@ export const AuthContextProvider: React.FC<{ children: React.ReactElement }> = (
     const handleLogin = async ({email, password}: { email: string, password: string }) => {
         const user = await login({email, password})
         setUser(user)
-        return user
+        return user!
     }
 
     const handleRegister = async ({
@@ -116,7 +108,7 @@ export const AuthContextProvider: React.FC<{ children: React.ReactElement }> = (
                                   }: { email: string, password: string, username: string }) => {
         const user = await register({email, password, username})
         setUser(user)
-        return user
+        return user!
     }
 
     const handleLogout = () => {

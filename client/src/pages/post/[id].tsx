@@ -1,31 +1,31 @@
 import {useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
-import {PostWithComments} from "@/interface/post";
+import React, {useEffect, useState} from "react";
+import {type Post} from "@/interface/post";
 import {getPostById} from "@/api/posts";
 import {useAuth} from "@/context/AuthContext";
-import {CreateCommentForm} from "@/components/Post/CreateCommentForm";
+import {CommentsArea} from "@/components/Post/CommentsArea";
 
 export const PostIdPage = () => {
     let {id} = useParams();
 
     const {token} = useAuth()
-    const [post, setPost] = useState<PostWithComments | null>()
+    const [post, setPost] = useState<Post | null>()
 
     const loadPost = async () => {
-        if (!id) return
+        if (!id || !token) return
         getPostById(id, token!).then((post) => {
             setPost(post)
         })
     }
     useEffect(() => {
         loadPost()
-    }, [token])
+    }, [token, id])
 
     if (post === undefined) {
         return <div>loading</div>
     }
 
-    if (isNaN(Number(id)) || post === null) {
+    if (!id || isNaN(Number(id)) || post === null) {
         return <div>Not Found</div>
     }
 
@@ -43,7 +43,7 @@ export const PostIdPage = () => {
 
                     <div className='border-t border-gray-300 dark:border-gray-800 pt-4'>
                         <p className='text-sm'>Members: </p>
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 overflow-auto">
                             {post.users.map(user => (
                                 <span key={user.id}>{user.name}</span>
                             ))}
@@ -52,20 +52,9 @@ export const PostIdPage = () => {
                 </div>
 
             </div>
-            <div
-                className="px-2 py-4 border bg-white border-gray-300 dark:border-gray-800 dark:bg-gray-900">
-                <h1 className='text-lg font-bold'>Comments</h1>
-                <CreateCommentForm postId={Number(id)} onCreate={loadPost}/>
-                {post.comments.length === 0 && <div>Empty</div>}
-                {post.comments.map(comment => (
-                    <div key={comment.id} className='flex flex-col gap-4 last:border-transparent border-b border-gray-300 dark:border-gray-800 py-4'>
-                        <p>
-                            {comment.content}
-                        </p>
-                        <p className='text-sm'>From: {comment.user.name}</p>
-                    </div>
-                ))}
-            </div>
+
+            <CommentsArea postId={id}/>
+
         </div>
     )
 }

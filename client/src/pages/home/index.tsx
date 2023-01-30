@@ -48,9 +48,7 @@ export const HomePage = () => {
     return (
         <div className='flex flex-col'>
             <div className="flex justify-between">
-                <div>
-                    <h1 className='font-bold text-lg'>Latest Posts</h1>
-                </div>
+                <h1 className='font-bold text-lg'>Latest Posts</h1>
                 <CreatePostButton onCreate={loadPosts}/>
             </div>
             <div className="mt-6 flex flex-col">
