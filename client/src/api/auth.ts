@@ -6,14 +6,14 @@ type LoginResponse = {
     user: User
     tokens: Tokens
 }
-export const login = async (email: string, password: string): Promise<null | LoginResponse> => {
+export const login = async (email: string, password: string): Promise<LoginResponse> => {
     const response = await POST('/auth/login', null, {
         email,
         password
     })
+
     if (response.code) {
-        console.log(response)
-        return null;
+        throw new Error(response.message)
     }
 
     return response as LoginResponse
@@ -25,7 +25,7 @@ export const logout = async (refresh_token: string): Promise<void> => {
     });
 }
 
-export const register = async (email: string, password: string, username: string): Promise<null | LoginResponse> => {
+export const register = async (email: string, password: string, username: string): Promise<LoginResponse> => {
     const response = await POST('/auth/register', null, {
         name: username,
         email,
@@ -33,10 +33,9 @@ export const register = async (email: string, password: string, username: string
     })
 
     if (response.code) {
-        console.log(response)
-        return null;
+        throw new Error(response.message)
     }
 
-    return response as LoginResponse
+    return response as LoginResponse;
 }
 

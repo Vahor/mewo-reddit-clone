@@ -2,24 +2,25 @@ import {Button} from "@/components/Button";
 import {Link} from "react-router-dom";
 import React, {FormEvent, useState} from "react";
 import {useAuth} from "@/context/AuthContext";
+import {ApiError} from "@/interface/error";
 
 export const LoginForm = () => {
     const [email, setEmail] = useState<string>('fake@example.com')
     const [password, setPassword] = useState<string>('password1')
 
     const [loading, setLoading] = useState(false)
-    const [error, setError] = useState(false)
+    const [error, setError] = useState<string | null>(null)
     const {login} = useAuth()
 
     const handleSubmit = async (event: FormEvent) => {
         event.preventDefault()
         setLoading(true)
-        setError(false)
+        setError(null)
         login({email, password})
-            .then((user) => {
-                if (!user) {
-                    setError(true)
-                }
+            .catch((error: ApiError) => {
+                setError(error.message)
+            })
+            .finally(() => {
                 setLoading(false)
             })
     }
@@ -27,7 +28,7 @@ export const LoginForm = () => {
     return (
         <>
             <p className='text-red-400'>
-                {error && 'Wrong username or password'}
+                {error}
             </p>
             <form className='flex flex-col' onSubmit={handleSubmit}>
                 <div>

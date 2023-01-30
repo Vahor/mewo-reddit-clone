@@ -2,6 +2,7 @@ import {Button} from "@/components/Button";
 import {Link} from "react-router-dom";
 import React, {FormEvent, useState} from "react";
 import {useAuth} from "@/context/AuthContext";
+import {ApiError} from "@/interface/error";
 
 export const RegisterForm = () => {
     const [username, setUsername] = useState<string>('fake')
@@ -9,18 +10,18 @@ export const RegisterForm = () => {
     const [password, setPassword] = useState<string>('password1')
 
     const [loading, setLoading] = useState(false)
-    const [error, setError] = useState(false)
+    const [error, setError] = useState<string | null>(null)
     const {register} = useAuth()
 
     const handleSubmit = async (event: FormEvent) => {
         event.preventDefault()
         setLoading(true)
-        setError(false)
+        setError(null)
         register({email, password, username})
-            .then((user) => {
-                if (!user) {
-                    setError(true)
-                }
+            .catch((error: ApiError) => {
+                setError(error.message)
+            })
+            .finally(() => {
                 setLoading(false)
             })
     }
@@ -28,7 +29,7 @@ export const RegisterForm = () => {
     return (
         <>
             <p className='text-red-400'>
-                {error && 'Email already taken'}
+                {error}
             </p>
             <form className='flex flex-col' onSubmit={handleSubmit}>
                 <div>

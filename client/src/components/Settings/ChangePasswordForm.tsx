@@ -36,7 +36,7 @@ export const ChangePasswordForm = () => {
 
     return (
         <>
-            <h2>
+            <h2 className='font-bold'>
                 Change password
             </h2>
 

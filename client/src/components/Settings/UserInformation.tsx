@@ -6,7 +6,7 @@ export const UserInformation = () => {
 
     return (
         <>
-            <h2>
+            <h2 className='font-bold'>
                 Information
             </h2>
 
