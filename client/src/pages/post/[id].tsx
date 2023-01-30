@@ -43,7 +43,7 @@ export const PostIdPage = () => {
 
                     <div className='border-t border-gray-300 dark:border-gray-800 pt-4'>
                         <p className='text-sm'>Members: </p>
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 overflow-auto">
                             {post.users.map(user => (
                                 <span key={user.id}>{user.name}</span>
                             ))}
