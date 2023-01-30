@@ -75,7 +75,7 @@ export const ChangePasswordForm = () => {
                     />
                 </div>
                 <div className="w-max ml-auto mt-4">
-                    <Button type="submit" disabled={!passwordMatch || loading}>
+                    <Button type="submit" disabled={!passwordMatch || loading || newPassword.length === 0}>
                         Change password
                     </Button>
                 </div>

@@ -29,7 +29,7 @@ export const ChangeUserData = () => {
             if (res) {
                 setError(res.message)
             } else {
-                alert('Password changed successfully')
+                alert('You are going to be disconnected');
                 setEmail('')
                 setName('')
                 logout()
