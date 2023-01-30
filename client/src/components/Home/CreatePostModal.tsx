@@ -59,7 +59,7 @@ export const CreatePostModal = ({open, close}: CreatePostModalProps) => {
 
 
     return (
-        <div className='absolute inset-0 bg-gray-900/20 backdrop-blur'>
+        <div className='absolute inset-0 top-10 bg-gray-900/20 backdrop-blur'>
             <div className="z-1 inset-0 absolute" onClick={() => close?.(false)}></div>
             <div className="z-[10] max-w-md m-auto relative bg-white dark:bg-gray-800 rounded-md w-full mt-16 p-8">
                 <p className='font-bold text-g dark:text-white'>Create Post</p>

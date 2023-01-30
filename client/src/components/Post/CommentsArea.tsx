@@ -20,7 +20,7 @@ export const CommentsArea = ({postId}: { postId: string }) => {
 
         const timeout = setInterval(() => {
             loadComments()
-        }, 3_000);
+        }, 5_000);
 
         return () => {
             clearInterval(timeout)
