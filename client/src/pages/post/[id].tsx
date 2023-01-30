@@ -1,9 +1,10 @@
 import {useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
-import {PostWithComments} from "@/interface/post";
+import React, {useEffect, useState} from "react";
+import {type PostWithComments} from "@/interface/post";
 import {getPostById} from "@/api/posts";
 import {useAuth} from "@/context/AuthContext";
 import {CreateCommentForm} from "@/components/Post/CreateCommentForm";
+import { CommentCard } from "@/components/Post/CommentCard";
 
 export const PostIdPage = () => {
     let {id} = useParams();
@@ -12,14 +13,14 @@ export const PostIdPage = () => {
     const [post, setPost] = useState<PostWithComments | null>()
 
     const loadPost = async () => {
-        if (!id) return
+        if (!id || !token) return
         getPostById(id, token!).then((post) => {
             setPost(post)
         })
     }
     useEffect(() => {
         loadPost()
-    }, [token])
+    }, [token, id])
 
     if (post === undefined) {
         return <div>loading</div>
@@ -58,12 +59,7 @@ export const PostIdPage = () => {
                 <CreateCommentForm postId={Number(id)} onCreate={loadPost}/>
                 {post.comments.length === 0 && <div>Empty</div>}
                 {post.comments.map(comment => (
-                    <div key={comment.id} className='flex flex-col gap-4 last:border-transparent border-b border-gray-300 dark:border-gray-800 py-4'>
-                        <p>
-                            {comment.content}
-                        </p>
-                        <p className='text-sm'>From: {comment.user.name}</p>
-                    </div>
+                    <CommentCard key={comment.id} comment={comment}/>
                 ))}
             </div>
         </div>
