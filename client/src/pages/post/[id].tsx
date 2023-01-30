@@ -1,16 +1,15 @@
 import {useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
-import {type PostWithComments} from "@/interface/post";
+import {type Post} from "@/interface/post";
 import {getPostById} from "@/api/posts";
 import {useAuth} from "@/context/AuthContext";
-import {CreateCommentForm} from "@/components/Post/CreateCommentForm";
-import {CommentCard} from "@/components/Post/CommentCard";
+import {CommentsArea} from "@/components/Post/CommentsArea";
 
 export const PostIdPage = () => {
     let {id} = useParams();
 
     const {token} = useAuth()
-    const [post, setPost] = useState<PostWithComments | null>()
+    const [post, setPost] = useState<Post | null>()
 
     const loadPost = async () => {
         if (!id || !token) return
@@ -20,21 +19,13 @@ export const PostIdPage = () => {
     }
     useEffect(() => {
         loadPost()
-
-        const timeout = setInterval(() => {
-            loadPost()
-        }, 5_000);
-
-        return () => {
-            clearInterval(timeout)
-        }
     }, [token, id])
 
     if (post === undefined) {
         return <div>loading</div>
     }
 
-    if (isNaN(Number(id)) || post === null) {
+    if (!id || isNaN(Number(id)) || post === null) {
         return <div>Not Found</div>
     }
 
@@ -61,15 +52,9 @@ export const PostIdPage = () => {
                 </div>
 
             </div>
-            <div
-                className="px-2 py-4 border bg-white border-gray-300 dark:border-gray-800 dark:bg-gray-900">
-                <h1 className='text-lg font-bold'>Comments</h1>
-                <CreateCommentForm postId={Number(id)} onCreate={loadPost}/>
-                {post.comments.length === 0 && <div>Empty</div>}
-                <section id="comments" className="pt-4">
-                    {[...post.comments].reverse().map(comment => <CommentCard key={comment.id} comment={comment}/>)}
-                </section>
-            </div>
+
+            <CommentsArea postId={id}/>
+
         </div>
     )
 }

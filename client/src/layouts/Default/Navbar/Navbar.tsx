@@ -17,7 +17,7 @@ const navbarLinks = [
 export const Navbar = () => {
     return (
         <div
-            className='fixed h-16 bg-white dark:bg-gray-900 w-full border-b border-gray-300 dark:border-gray-800 '>
+            className='fixed h-16 bg-white dark:bg-gray-900 w-full border-b border-gray-300 dark:border-gray-800 z-10'>
             <div
                 className="relative h-16 w-full flex flex-row max-w-screen-lg px-4 items-center justify-between mx-auto">
                 <Link to='/'>

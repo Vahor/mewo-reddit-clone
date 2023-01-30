@@ -7,10 +7,6 @@ export type Post = {
     users: User[]
 }
 
-export type PostWithComments = Post & {
-    comments: Comment[]
-}
-
 export type Comment = {
     id: string
     content: string

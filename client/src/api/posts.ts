@@ -1,5 +1,5 @@
 import {GET, POST} from "@/api/utils";
-import {Post, PostWithComments} from "@/interface/post";
+import {Comment, Post} from "@/interface/post";
 import {User} from "@/interface/user";
 
 export const getPosts = async (token: string): Promise<Post[] | null> => {
@@ -13,24 +13,21 @@ export const getPosts = async (token: string): Promise<Post[] | null> => {
     return response as Post[]
 }
 
-export const getPostById = async (postId: string, token: string): Promise<PostWithComments | null> => {
+export const getPostById = async (postId: string, token: string): Promise<Post | null> => {
     const response = await GET(`/discussions/${postId}`, token)
 
     if (response.code) {
         console.log(response)
         return null;
     }
-    const responseComments = await GET(`/discussions/${postId}/comments`, token)
 
+    return response as Post
+}
 
-    const post = response as PostWithComments;
-    if (responseComments.code) {
-        post.comments = []
-    } else {
-        post.comments = responseComments as PostWithComments['comments'];
-    }
+export const getComments = async (postId: string, token: string): Promise<Comment[] | null> => {
+    const comments = await GET(`/discussions/${postId}/comments`, token)
 
-    return post
+    return comments as Comment[]
 }
 
 
