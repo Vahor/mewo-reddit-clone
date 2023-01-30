@@ -4,7 +4,7 @@ import {type PostWithComments} from "@/interface/post";
 import {getPostById} from "@/api/posts";
 import {useAuth} from "@/context/AuthContext";
 import {CreateCommentForm} from "@/components/Post/CreateCommentForm";
-import { CommentCard } from "@/components/Post/CommentCard";
+import {CommentCard} from "@/components/Post/CommentCard";
 
 export const PostIdPage = () => {
     let {id} = useParams();
@@ -20,6 +20,14 @@ export const PostIdPage = () => {
     }
     useEffect(() => {
         loadPost()
+
+        const timeout = setInterval(() => {
+            loadPost()
+        }, 5_000);
+
+        return () => {
+            clearInterval(timeout)
+        }
     }, [token, id])
 
     if (post === undefined) {
@@ -58,9 +66,9 @@ export const PostIdPage = () => {
                 <h1 className='text-lg font-bold'>Comments</h1>
                 <CreateCommentForm postId={Number(id)} onCreate={loadPost}/>
                 {post.comments.length === 0 && <div>Empty</div>}
-                {post.comments.map(comment => (
-                    <CommentCard key={comment.id} comment={comment}/>
-                ))}
+                <section id="comments" className="pt-4">
+                    {[...post.comments].reverse().map(comment => <CommentCard key={comment.id} comment={comment}/>)}
+                </section>
             </div>
         </div>
     )
