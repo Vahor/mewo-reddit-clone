@@ -70,10 +70,10 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <React.StrictMode>
-        <AuthContextProvider>
-            <ThemeContextProvider>
+        <ThemeContextProvider>
+            <AuthContextProvider>
                 <RouterProvider router={router}/>
-            </ThemeContextProvider>
-        </AuthContextProvider>
+            </AuthContextProvider>
+        </ThemeContextProvider>
     </React.StrictMode>,
 )
